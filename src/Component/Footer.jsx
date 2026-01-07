@@ -14,7 +14,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   // The link you want the QR code to open
-  const websiteUrl = "https://madhavsapkotasite-c93qmlfdq-sandeshrais-projects.vercel.app/";
+  const websiteUrl = "https://madhavsapkotasite.vercel.app/";
 
   return (
     <footer className="bg-[#0f172a] text-slate-400 border-t border-slate-800">
