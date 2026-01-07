@@ -1,46 +1,25 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, Calendar, PlayCircle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getAllNews } from "../../utils/function";
 
 const News = () => {
-  const newsItems = [
-    {
-      date: "August 5, 2025",
-      title: "Parliamentary Probe on Civil Service Bill Tampering",
-      summary: "As a key member of the 7-member special committee, Sapkota helped finalize the report on the 'cooling-off period' controversy in the Federal Civil Service Bill.",
-      tag: "Governance",
-      type: "Article",
-      link: "https://english.nepalnews.com/s/politics/probe-committee-submits-report-on-cooling-off-period-tampering"
-    },
-    {
-      date: "June 24, 2025",
-      title: "Speech on Economic Bill 2082 BS",
-      summary: "Watch Sapkota's detailed intervention in the House of Representatives regarding national revenue and expenditure estimates for the new fiscal year.",
-      tag: "Economy",
-      type: "Video",
-      link: "https://hr.parliament.gov.np/en/video/23409"
-    },
-    {
-      date: "February 18, 2025",
-      title: "Justice for Nepali Students Abroad",
-      summary: "Madhav Sapkota raised his voice in the emergency HoR session demanding a thorough investigation into the suspicious death of a Nepali student at KIIT University.",
-      tag: "Social Justice",
-      type: "Article",
-      link: "https://kathmandupost.com/national/2025/02/18/kiit-issues-formal-apology-over-nepali-student-s-death"
-    },
-    {
-      date: "June 2, 2024",
-      title: "Disaster Damage & Melamchi Relief Advocacy",
-      summary: "Urged the government to expedite relief for Indrawati and Melamchi flood victims and prepare for monsoon-related landslides in Sindhupalchok.",
-      tag: "Climate",
-      type: "Article",
-      link: "https://english.makalukhabar.com/hor-meeting-sapkota-calls-for-effective-preparations-to-reduce-disaster-damage/"
-    }
-  ];
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["newsdata"],
+    queryFn: getAllNews
+  });
+
+  if (isLoading) return <p className="text-center py-24">Loading news...</p>;
+  if (isError) return <p className="text-center py-24 text-red-600">Error loading news</p>;
+
+  // Use the fetched data from backend
+  // Sort by date descending (latest first)
+  const sortedNews = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <section className="py-24 bg-white">
-      <div className="max-w-6xl mx-auto px-6"> {/* Reduced max-width for better 2-column focus */}
+      <div className="max-w-6xl mx-auto px-6">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -58,14 +37,14 @@ const News = () => {
           </div>
         </div>
 
-        {/* News Grid - UPDATED TO 2 COLUMNS */}
+        {/* News Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {newsItems.map((item, i) => (
+          {sortedNews.map((item, i) => (
             <motion.a 
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              key={i}
+              key={item._id} // use backend _id
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
@@ -74,7 +53,7 @@ const News = () => {
             >
               <div className="bg-slate-50 rounded-[3rem] p-10 h-full border border-slate-100 hover:border-red-100 hover:bg-white hover:shadow-2xl transition-all duration-500 flex flex-col relative overflow-hidden">
                 
-                {/* Background Decoration for 2-column layout */}
+                {/* Background Decoration */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-red-500/10 transition-colors"></div>
 
                 <div className="flex items-center justify-between mb-8 relative z-10">

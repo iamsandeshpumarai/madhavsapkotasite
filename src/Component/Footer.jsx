@@ -1,13 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { QRCodeSVG } from "qrcode.react"; // ✅ named export
+import { useQuery } from '@tanstack/react-query';
+import { getContactData } from '../../utils/function';
 
 
 const Footer = () => {
+ const {data} =  useQuery({
+    queryKey:['contactdata'],
+    queryFn:getContactData
+  })
+
   const currentYear = new Date().getFullYear();
 
   // The link you want the QR code to open
-  const websiteUrl = "https://share.google/5XS9ry1KKUlUhnl6F";
+  const websiteUrl = "https://madhavsapkotasite-c93qmlfdq-sandeshrais-projects.vercel.app/";
 
   return (
     <footer className="bg-[#0f172a] text-slate-400 border-t border-slate-800">
@@ -66,15 +73,15 @@ const Footer = () => {
             <div className="space-y-6 text-sm">
               <div className="flex items-start gap-4">
                 <span className="p-2 bg-slate-800 rounded text-blue-500">📍</span>
-                <p>Singha Durbar, Kathmandu<br />Federal Parliament Office</p>
+                <p> {data?.offices[0].locationName || "Singha Durbar, Kathmandu"} <br />Federal Parliament Office</p>
               </div>
               <div className="flex items-center gap-4">
                 <span className="p-2 bg-slate-800 rounded text-blue-500">📞</span>
-                <p>+977 9851334035</p>
+                <p>{data?.offices[0].phone || "+977 9851334035"}</p>
               </div>
               <div className="flex items-center gap-4">
                 <span className="p-2 bg-slate-800 rounded text-blue-500">✉️</span>
-                <p>maoistbagmati@gmail.com</p>
+                <p>{data?.offices[0].email || "maoistbagmati@gmail.com"}</p>
               </div>
             </div>
           </div>

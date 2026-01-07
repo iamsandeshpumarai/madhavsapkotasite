@@ -23,7 +23,7 @@ const Herosection = ({ data }) => {
 
           <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.9] mb-6">
             {data.name} <br />
-            <span className="text-red-600 italic font-serif font-light text-5xl md:text-7xl">"{data.alias}"</span>
+            <span className="text-red-600 italic font-serif font-light text-5xl md:text-7xl">"{data.nickname}"</span>
           </h1>
 
           <p className="text-lg text-slate-500 max-w-lg font-medium leading-relaxed mb-10">

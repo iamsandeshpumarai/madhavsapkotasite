@@ -4,10 +4,21 @@ import {
   MapPin, Clock, CalendarX, Send, 
   Phone, Mail, ChevronRight, ExternalLink 
 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getContactData, sendMessage } from "../../utils/function";
 
 const Contact = () => {
+
+const {data} = useQuery({
+  queryKey:['contactdata'],
+  queryFn:getContactData
+}
+)
+
+
+
   const contactData = {
-    offices: [
+    offices: data?.offices || [
       {
         id: 1,
         title: "Federal Office",
@@ -27,7 +38,7 @@ const Contact = () => {
         mapQuery: "Chautara, Sindhupalchok"
       }
     ],
-    schedule: {
+    schedule:data?.schedule || {
       summer: "10:00 AM - 5:00 PM (Feb 15 - Nov 15)",
       winter: "10:00 AM - 4:00 PM (Nov 16 - Feb 14)",
       friday: "10:00 AM - 3:00 PM (Half Day)",
@@ -40,6 +51,7 @@ const Contact = () => {
         { date: "Feb 19", name: "Democracy Day" }
       ]
     }
+
   };
 
   const [activeOffice, setActiveOffice] = useState(contactData.offices[0]);
@@ -48,9 +60,11 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.agreed) return alert("Please agree to the terms.");
-    console.log("Form Submitted:", formData);
+   
     alert("Message sent successfully!");
+    sendMessage(formData)
   };
+
 
   return (
     <div className="bg-slate-50 min-h-screen py-24 px-6 md:px-12">
@@ -72,7 +86,7 @@ const Contact = () => {
             {/* 1. Interactive Contact Info Card */}
             <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
               <div className="flex flex-wrap gap-4 mb-8">
-                {contactData.offices.map((office) => (
+                {contactData?.offices.map((office) => (
                   <button 
                     key={office.id}
                     onClick={() => setActiveOffice(office)}

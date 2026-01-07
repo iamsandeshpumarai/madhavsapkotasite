@@ -1,50 +1,48 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Map, Zap, Droplets, HardHat, TrendingUp, Users } from "lucide-react";
-
+import { Map, Zap, TrendingUp, Users, HardHat } from "lucide-react";
+import image from '../assets/logo/unnamed.jpg'
+import { useQuery } from "@tanstack/react-query";
+import { getAllConstituencyData } from "../../utils/function";
 
 const ConstituencyPage = () => {
-    const constituencyData = {
-  stats: [
-    { label: "Voter Count", value: "30,374", icon: <Users size={24} /> },
-    { label: "Local Units", value: "6+", icon: <Map size={24} /> },
-    { label: "Energy Impact", value: "45MW", icon: <Zap size={24} /> },
-    { label: "Growth Index", value: "+12%", icon: <TrendingUp size={24} /> }
-  ],
-  
-  projects: [
-    {
-      title: "Bhotekoshi River Corridor Resilience",
-      category: "Climate & Infrastructure",
-      status: "In Progress",
-      description: "Implementing advanced embankment systems to protect downstream villages from glacial lake outburst floods (GLOFs).",
-      img: "/assets/project1.jpg"
-    },
-    {
-      title: "Arniko Highway Modernization",
-      category: "Transport",
-      status: "Completed",
-      description: "Restoring the vital trade link with China, improving the road surface from Bahrabise to Tatopani.",
-      img: "/assets/project2.jpg"
-    },
-    {
-      title: "Sindhupalchok Hydropower Hub",
-      category: "Economy",
-      status: "Ongoing",
-      description: "Supporting local shareholding in new hydropower projects to ensure villagers benefit directly from natural resources.",
-      img: "/assets/project3.jpg"
-    }
-  ],
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['constituencydata'],
+    queryFn: getAllConstituencyData
+  });
 
-  localLevels: [
-    { name: "Bahrabise", type: "Municipality" },
-    { name: "Bhotekoshi", type: "Rural Municipality" },
-    { name: "Jugal", type: "Rural Municipality" },
-    { name: "Tripurasundari", type: "Rural Municipality" },
-    { name: "Sunkoshi", type: "Rural Municipality" },
-    { name: "Lisankhu Pakhar", type: "Rural Municipality" }
-  ]
-};
+  // Helper to map string icon names from DB to Lucide Components
+  const getIcon = (iconName) => {
+    switch (iconName) {
+      case 'users': return <Users size={24} />;
+      case 'map': return <Map size={24} />;
+      case 'zap': return <Zap size={24} />;
+      case 'trending-up': return <TrendingUp size={24} />;
+      default: return <Zap size={24} />;
+    }
+  };
+
+  // 1. Loading State
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="animate-pulse text-xl font-bold text-slate-400">Loading Constituency Data...</div>
+      </div>
+    );
+  }
+
+  // 2. Error State
+  if (isError || !data || data.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-red-500 font-medium">Failed to load data. Please try again later.</div>
+      </div>
+    );
+  }
+
+  // 3. Extract the first document from the array
+  const activeData = data[0];
+
   return (
     <div className="bg-slate-50 min-h-screen pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-6">
@@ -62,12 +60,12 @@ const ConstituencyPage = () => {
 
         {/* STATS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-          {constituencyData.stats.map((stat, i) => (
+          {activeData.stats.map((stat, i) => (
             <motion.div 
               whileHover={{ y: -5 }}
               key={i} className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100"
             >
-              <div className="text-red-600 mb-4">{stat.icon}</div>
+              <div className="text-red-600 mb-4">{getIcon(stat.icon)}</div>
               <p className="text-3xl font-black text-slate-900">{stat.value}</p>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{stat.label}</p>
             </motion.div>
@@ -81,10 +79,10 @@ const ConstituencyPage = () => {
               <HardHat className="text-red-600" /> Key Projects & Initiatives
             </h2>
             
-            {constituencyData.projects.map((project, i) => (
-              <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 flex gap-6 hover:shadow-xl transition-all">
-                <div className="hidden md:block shrink-0 w-24 h-24 bg-slate-50 rounded-3xl overflow-hidden">
-                   <img src={project.img} alt={project.title} className="w-full h-full object-cover" />
+            {activeData.projects.map((project, i) => (
+              <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 flex flex-col md:flex-row gap-6 hover:shadow-xl transition-all">
+                <div className="shrink-0 w-24 h-24 bg-slate-50 rounded-3xl overflow-hidden border border-slate-100">
+                   <img src={image} alt={project.title} className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <div className="flex items-center gap-3 mb-2">
@@ -93,10 +91,10 @@ const ConstituencyPage = () => {
                     }`}>
                       {project.status}
                     </span>
-                    <span className="text-slate-400 text-xs font-bold">{project.category}</span>
+                    <span className="text-slate-400 text-xs font-bold capitalize">{project.category}</span>
                   </div>
                   <h3 className="text-2xl font-black text-slate-800 mb-2">{project.title}</h3>
-                  <p className="text-slate-500 leading-relaxed">{project.description}</p>
+                  <p className="text-slate-500 leading-relaxed text-sm md:text-base">{project.description}</p>
                 </div>
               </div>
             ))}
@@ -107,7 +105,7 @@ const ConstituencyPage = () => {
             <div className="bg-slate-900 rounded-[3rem] p-10 text-white sticky top-28">
               <h3 className="text-xl font-black mb-8 border-b border-white/10 pb-4">Local Governance Units</h3>
               <ul className="space-y-6">
-                {constituencyData.localLevels.map((level, i) => (
+                {activeData.localLevels.map((level, i) => (
                   <li key={i} className="flex justify-between items-center group">
                     <span className="text-slate-400 group-hover:text-white transition-colors">{level.name}</span>
                     <span className="text-[10px] font-black bg-white/10 px-3 py-1 rounded-full uppercase">

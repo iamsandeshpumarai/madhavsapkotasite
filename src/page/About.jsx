@@ -1,62 +1,36 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Landmark, Shield, User, MapPin, Award, CheckCircle ,Calendar } from "lucide-react";
+import { Landmark, Shield, User, MapPin, Award, CheckCircle, Calendar, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getAboutData } from "../../utils/function";
 
 const AboutPage = () => {
-  const data = {
-  profile: {
-    firstName: "Madhav",
-    lastName: "Sapkota",
-    alias: "Subodh",
-    birthDate: "April 2, 1981 (2037-12-20 BS)",
-    party: "CPN (Maoist Centre)",
-    constituency: "Sindhupalchok-1",
-    totalVotes: "30,374",
-    status: "Incumbent Member of Parliament",
-    photoUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhoWFDixQJmQkNlNPLSO3MoaplAmHCoQexJ45VZbZORMqsqE7M7lNs4DbScnU2WwgGYYpDtkdRKQlNnxIPp3S3Mznc7PWLP4pQ-ACtoFkI_A&s=10"
-  },
-  
-  // Unified Leadership & Career Array
-  politicalPositions: [
-    {
-      role: "Member of the House of Representatives",
-      period: "Dec 2022 - Present",
-      level: "Federal",
-      description: "Elected from Sindhupalchok-1, focusing on climate resilience and national infrastructure policy.",
-      details: [
-        { label: "Margin", value: "3,356 Votes" },
-        { label: "Assembly", value: "2nd Federal Parliament" }
-      ]
-    },
-    {
-      role: "District In-charge",
-      period: "2020 - 2022",
-      level: "District",
-      description: "Led organizational strategies and community development projects across Sindhupalchok.",
-      details: [
-        { label: "Party", value: "CPN (Maoist Centre)" },
-        { label: "Region", value: "Bagmati Province" }
-      ]
-    },
-    {
-      role: "Revolutionary Field Commander",
-      period: "1998 - 2006",
-      level: "Grassroots",
-      description: "Active leadership during the democratic movements, advocating for inclusive governance.",
-      details: [
-        { label: "Codename", value: "Subodh" },
-        { label: "Focus", value: "Social Transformation" }
-      ]
-    }
-  ],
+  // 1. Fetch data from TanStack Query
+  const { data: aboutdata, isLoading, isError } = useQuery({
+    queryKey: ['aboutdata'],
+    queryFn: getAboutData
+  });
 
-  impacts: [
-    "Renewable Energy Champion (Global Renewables Congress)",
-    "Lead advocate for the reconstruction of the Arniko Highway.",
-    "Member of the Parliamentary Committee on Infrastructure Development.",
-    "International Climate Representative for Nepal (Dhaka Summit 2023)."
-  ]
-};
+  // 2. Handle Loading State
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <Loader2 className="animate-spin text-red-600" size={48} />
+      </div>
+    );
+  }
+
+  // 3. Handle Error or Empty Data State
+  if (isError || !aboutdata || aboutdata.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white text-slate-500">
+        <p className="text-xl font-medium">Failed to load profile information.</p>
+      </div>
+    );
+  }
+
+  // 4. Use the first record from the database array
+  const data = aboutdata[0];
 
   return (
     <div className="bg-white min-h-screen py-20 px-4 md:px-12 selection:bg-red-50">
@@ -70,7 +44,11 @@ const AboutPage = () => {
             className="lg:col-span-5 relative"
           >
             <div className="rounded-[4rem] overflow-hidden shadow-2xl border-[16px] border-slate-50">
-              <img src={data.profile.photoUrl} alt="Madhav Sapkota" className="w-full object-cover aspect-[4/5]" />
+              <img 
+                src={data.profile.photoUrl} 
+                alt={`${data.profile.firstName} ${data.profile.lastName}`} 
+                className="w-full object-cover aspect-[4/5]" 
+              />
             </div>
             <div className="absolute -bottom-8 -left-8 bg-slate-900 text-white p-8 rounded-3xl shadow-xl">
               <p className="text-4xl font-black">{data.profile.totalVotes}</p>
@@ -87,7 +65,7 @@ const AboutPage = () => {
               {data.profile.firstName} <span className="text-red-600 italic font-light font-serif">{data.profile.lastName}</span>
             </motion.h1>
             <p className="text-2xl text-slate-500 font-light leading-relaxed mb-10">
-              Representing the heart of Sindhupalchok, Madhav Sapkota (Subodh) is a voice for sustainable growth, 
+              Representing the heart of {data.profile.constituency.split('-')[0]}, {data.profile.firstName} {data.profile.lastName} ({data.profile.alias}) is a voice for sustainable growth, 
               bridging revolutionary ideals with modern parliamentary governance.
             </p>
             
@@ -123,14 +101,17 @@ const AboutPage = () => {
                 <p className="text-red-600 font-black text-[10px] uppercase tracking-widest mb-6">{pos.period}</p>
                 <p className="text-slate-500 text-sm leading-relaxed mb-8">{pos.description}</p>
                 
-                <div className="space-y-3 pt-6 border-t border-slate-200">
-                  {pos.details.map((d, idx) => (
-                    <div key={idx} className="flex justify-between text-[10px] font-black uppercase">
-                      <span className="text-slate-400">{d.label}</span>
-                      <span className="text-slate-900">{d.value}</span>
-                    </div>
-                  ))}
-                </div>
+                {/* Details Section (Margin, Assembly, etc) */}
+                {pos.details && pos.details.length > 0 && (
+                  <div className="space-y-3 pt-6 border-t border-slate-200">
+                    {pos.details.map((d, idx) => (
+                      <div key={idx} className="flex justify-between text-[10px] font-black uppercase">
+                        <span className="text-slate-400">{d.label}</span>
+                        <span className="text-slate-900">{d.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>
@@ -139,15 +120,21 @@ const AboutPage = () => {
         {/* IMPACT LIST */}
         <section className="bg-slate-900 rounded-[4rem] p-12 md:p-20 text-white overflow-hidden relative">
           <div className="absolute top-0 right-0 p-20 opacity-5">
-             <Landmark size={300} />
+              <Landmark size={300} />
           </div>
           <h3 className="text-3xl font-black mb-12">Key Contributions & Impact</h3>
           <div className="grid md:grid-cols-2 gap-x-16 gap-y-8">
             {data.impacts.map((impact, i) => (
-              <div key={i} className="flex items-start gap-4">
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="flex items-start gap-4"
+              >
                 <CheckCircle className="text-red-500 shrink-0 mt-1" size={20} />
                 <p className="text-lg text-slate-300 font-light">{impact}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>

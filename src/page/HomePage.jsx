@@ -1,54 +1,43 @@
 import React from 'react'
 import Herosection from '../Component/Herosection'
 import Experience from '../Component/Experience'
+import { useQuery } from '@tanstack/react-query'
+import { getHomeData } from '../../utils/function'
 
 const HomePage = () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['homedata'],
+    queryFn: getHomeData
+  })
+
+  // 1. Handle Loading and Error states
+  if (isLoading) return <div className="py-20 text-center">Loading...</div>
+  if (isError || !data) return <div className="py-20 text-center text-red-500">Error loading data.</div>
+
+  // 2. Map the dynamic data to the Hero format
+  // We use data[0] if the API returns an array, or just 'data' if it's an object
+  // Based on your JSON, it looks like a single object.
   const heroData = {
-    name: "Madhav Sapkota",
-    alias: "Subodh",
-    role: "System Leadership Specialist & MP",
-    constituency: "Sindhupalchok-1",
-    tagline: "Bridging the gap between academic research and grassroots infrastructure development.",
-    images: [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhoWFDixQJmQkNlNPLSO3MoaplAmHCoQexJ45VZbZORMqsqE7M7lNs4DbScnU2WwgGYYpDtkdRKQlNnxIPp3S3Mznc7PWLP4pQ-ACtoFkI_A&s=10"
-    ],
-    stats: [
-      { label: "Focus Area", value: "Rural Dev." },
-      { label: "Expertise", value: "Policy Analysis" },
-      { label: "Background", value: "Social Research" }
-    ]
+    name: data.name,
+    nickname: data.nickname,
+    role: data.role,
+    constituency: data.constituency,
+    tagline: data.tagline,
+    images: data.images,
+    stats: data.stats.map(stat => ({
+      label: stat.label,
+      value: stat.value
+    }))
   };
 
-  const professionalExperience = [
-    {
-      year: "2020 - Present",
-      role: "Policy Researcher & System Strategist",
-      organization: "Rural Development Sector",
-      description: "Published research on 'Sustainable Political Leadership Based on System Thinking,' focusing on how creative collaboration transforms rural society and local governance."
-    },
-    {
-      year: "2015 - 2021",
-      role: "Post-Disaster Reconstruction Coordinator",
-      organization: "Sindhupalchok Relief Initiatives",
-      description: "Managed large-scale logistical operations and stakeholder coordination for the reconstruction of Sindhupalchok following the 2015 earthquake."
-    },
-    {
-      year: "2010 - 2015",
-      role: "Grassroots Infrastructure Project Lead",
-      organization: "Local Development Committees",
-      description: "Directed rural electrification and road connectivity projects, ensuring technical standards met the needs of isolated Himalayan communities."
-    },
-    {
-      year: "2005 - 2010",
-      role: "Social Mobilization Specialist",
-      organization: "Community Outreach Programs",
-      description: "Developed frameworks for civic participation and democratic engagement, helping local citizens access governmental resources effectively."
-    }
-  ];
+  // 3. Map professional experience
+  const professionalExperience = data.professionalExperience || [];
 
   return (
     <div className="bg-white overflow-hidden">
+      {/* Pass the dynamic hero data */}
       <Herosection data={heroData} />
+      
       <div className="py-20">
         <div className="max-w-7xl mx-auto px-6 mb-12">
           <h2 className="text-4xl font-black text-slate-900 tracking-tighter">
@@ -56,6 +45,8 @@ const HomePage = () => {
           </h2>
           <div className="w-20 h-1.5 bg-slate-900 mt-4 rounded-full"></div>
         </div>
+        
+        {/* Pass the dynamic experience list */}
         <Experience list={professionalExperience} />
       </div>
     </div>
