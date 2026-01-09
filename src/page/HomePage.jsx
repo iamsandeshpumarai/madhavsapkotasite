@@ -3,6 +3,7 @@ import Herosection from '../Component/Herosection'
 import Experience from '../Component/Experience'
 import { useQuery } from '@tanstack/react-query'
 import { getHomeData } from '../../utils/function'
+import Loading from '../Component/Loading'
 
 const HomePage = () => {
   const { data, isLoading, isError } = useQuery({
@@ -11,7 +12,7 @@ const HomePage = () => {
   })
 
   // 1. Handle Loading and Error states
-  if (isLoading) return <div className="py-20 text-center">Loading...</div>
+  if (isLoading) return <Loading/>
   if (isError || !data) return <div className="py-20 text-center text-red-500">Error loading data.</div>
 
   // 2. Map the dynamic data to the Hero format

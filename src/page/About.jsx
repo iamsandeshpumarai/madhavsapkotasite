@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Landmark, Shield, User, MapPin, Award, CheckCircle, Calendar, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getAboutData } from "../../utils/function";
+import Loading from "../Component/Loading";
 
 const AboutPage = () => {
   // 1. Fetch data from TanStack Query
@@ -14,9 +15,7 @@ const AboutPage = () => {
   // 2. Handle Loading State
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <Loader2 className="animate-spin text-red-600" size={48} />
-      </div>
+    <Loading/>
     );
   }
 

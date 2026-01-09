@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { MapPin, Calendar, Clock, ExternalLink } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllEvents } from "../../utils/function";
+import Loading from "../Component/Loading";
 
 const Event = () => {
   const {
@@ -21,9 +22,7 @@ const Event = () => {
   // ---- Loading state ----
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-slate-500 font-bold">
-        Loading events...
-      </div>
+      <Loading/>
     );
   }
 

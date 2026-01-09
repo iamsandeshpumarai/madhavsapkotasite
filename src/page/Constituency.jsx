@@ -4,6 +4,7 @@ import { Map, Zap, TrendingUp, Users, HardHat } from "lucide-react";
 import image from '../assets/logo/unnamed.jpg'
 import { useQuery } from "@tanstack/react-query";
 import { getAllConstituencyData } from "../../utils/function";
+import Loading from "../Component/Loading";
 
 const ConstituencyPage = () => {
   const { data, isLoading, isError } = useQuery({
@@ -14,10 +15,10 @@ const ConstituencyPage = () => {
   // Helper to map string icon names from DB to Lucide Components
   const getIcon = (iconName) => {
     switch (iconName) {
-      case 'users': return <Users size={24} />;
-      case 'map': return <Map size={24} />;
-      case 'zap': return <Zap size={24} />;
-      case 'trending-up': return <TrendingUp size={24} />;
+      case 0: return <Users size={24} />;
+      case 1: return <Map size={24} />;
+      case 2: return <Zap size={24} />;
+      case 3: return <TrendingUp size={24} />;
       default: return <Zap size={24} />;
     }
   };
@@ -25,9 +26,7 @@ const ConstituencyPage = () => {
   // 1. Loading State
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-pulse text-xl font-bold text-slate-400">Loading Constituency Data...</div>
-      </div>
+    <Loading/>
     );
   }
 
@@ -65,7 +64,7 @@ const ConstituencyPage = () => {
               whileHover={{ y: -5 }}
               key={i} className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100"
             >
-              <div className="text-red-600 mb-4">{getIcon(stat.icon)}</div>
+              <div className="text-red-600 mb-4">{getIcon(i)}</div>
               <p className="text-3xl font-black text-slate-900">{stat.value}</p>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{stat.label}</p>
             </motion.div>

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ExternalLink, Calendar, PlayCircle } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllNews } from "../../utils/function";
+import Loading from "../Component/Loading";
 
 const News = () => {
   const { data, isLoading, isError } = useQuery({
@@ -10,7 +11,7 @@ const News = () => {
     queryFn: getAllNews
   });
 
-  if (isLoading) return <p className="text-center py-24">Loading news...</p>;
+  if (isLoading) return <Loading/>
   if (isError) return <p className="text-center py-24 text-red-600">Error loading news</p>;
 
   // Use the fetched data from backend

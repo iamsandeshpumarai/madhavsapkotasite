@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Play, Layers } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getGalleryData } from "../../utils/function";
+import Loading from "../Component/Loading";
 
 const Gallery = () => {
   // 1. Fetch data from backend
@@ -32,7 +33,7 @@ const Gallery = () => {
     : galleryCollections.filter(album => album.category === filter);
 
   // Handle Loading and Error states
-  if (isLoading) return <div className="h-screen flex items-center justify-center font-bold">Loading Gallery...</div>;
+  if (isLoading) return <Loading/>
   if (isError) return <div className="h-screen flex items-center justify-center text-red-500">Error loading images.</div>;
 
   return (
