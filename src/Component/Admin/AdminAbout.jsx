@@ -3,6 +3,7 @@ import { Save, Upload, Trash2, Plus, Landmark, CheckCircle, User, Award, Loader2
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getAboutData, sendAboutData } from "../../../utils/function";
 import toast from "react-hot-toast";
+import Loading from "../Loading";
 
 const AdminAbout = () => {
   const fileInputRef = useRef(null);
@@ -85,10 +86,7 @@ const AdminAbout = () => {
   // Loading State
   if (isLoading || !data) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-slate-500">
-        <Loader2 className="animate-spin text-red-600" size={40} />
-        <p className="font-bold animate-pulse">Loading Profile Data...</p>
-      </div>
+      <Loading/>
     );
   }
 

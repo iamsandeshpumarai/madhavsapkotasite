@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Trash2, Edit2, X, Eye, Image as ImageIcon, Video, Save, Upload, Film } from 'lucide-react';
 import { CreateGallery, deleteGalleryData, getGalleryData, updateGalleryData } from '../../../utils/function.js';
+import Loading from '../Loading.jsx';
 
 const AdminGallery = () => {
   const queryClient = useQueryClient();
@@ -126,7 +127,7 @@ const handleEdit = (col) => {
     setForm({ ...form, media: [...form.media, { type: 'image', file: null, src: '', caption: '' }] });
   };
 
-  if (isLoading) return <div className="p-10 text-center font-bold">Loading Gallery...</div>;
+  if (isLoading) return <Loading/>
   if (isError) return <div className="p-10 text-center text-red-500">Error fetching data.</div>;
 
   return (

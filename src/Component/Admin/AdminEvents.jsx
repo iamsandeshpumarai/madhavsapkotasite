@@ -3,6 +3,7 @@ import { Edit2, Trash2, Plus, Save, Calendar, MapPin, Link as LinkIcon, Info, La
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getAllEvents, updateEvent, createEvent, deleteEvent } from '../../../utils/function.js';
+import Loading from '../Loading.jsx';
 
 const EventsAdmin = () => {
   const queryClient = useQueryClient();
@@ -73,7 +74,7 @@ const EventsAdmin = () => {
     mutation.mutate(form);
   };
 
-  if (isLoading) return <div className="p-10 text-center font-bold">Loading Events...</div>;
+  if (isLoading) return <Loading/>
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8">

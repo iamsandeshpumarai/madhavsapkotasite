@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useQueries } from "@tanstack/react-query";
 import { getAllEvents, getAllNews, getGalleryData, getAllConstituencyData } from "../../../utils/function";
+import Loading from "../Loading";
 
 const AdminDashboard = () => {
   const results = useQueries({
@@ -53,10 +54,7 @@ const counts = {
           <p className="text-gray-500 text-sm">Here is what's happening with your platform today.</p>
         </div>
         {isLoading && (
-          <div className="flex items-center gap-2 text-blue-600 text-sm font-medium">
-            <Loader2 className="animate-spin" size={16} />
-            Updating counts...
-          </div>
+          <Loading/>
         )}
       </div>
 

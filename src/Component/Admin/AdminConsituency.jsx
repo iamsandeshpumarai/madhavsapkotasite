@@ -3,6 +3,7 @@ import { Edit2, Trash2, Plus, X, Save, LayoutDashboard } from 'lucide-react';
 import { getAllConstituencyData, sendConstituencyData } from '../../../utils/function';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from 'react-hot-toast';
+import Loading from '../Loading';
 
 const AdminConstituency = () => {
   const clientData = useQueryClient();
@@ -100,7 +101,7 @@ const AdminConstituency = () => {
   };
 
   // Loading and Error States
-  if (isLoading) return <div className="p-10 text-center font-bold">Loading Constituency Data...</div>;
+  if (isLoading) return <Loading/>
   if (isError) return <div className="p-10 text-center text-red-500">Error fetching data. Check your API.</div>;
 
   return (

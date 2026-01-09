@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Edit2, Trash2, Plus, Save, Newspaper, Link as LinkIcon, Tag, ExternalLink } from 'lucide-react';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllNews, updateNews, createNews, deleteNews } from '../../../utils/function.js';
+import Loading from '../Loading.jsx';
 
 const AdminNews = () => {
   const queryClient = useQueryClient();
@@ -56,7 +57,7 @@ const AdminNews = () => {
     mutation.mutate(form);
   };
 
-  if (isLoading) return <div className="p-10 text-center font-bold">Loading News...</div>;
+  if (isLoading) return <Loading/>;
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8">

@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Trash2, Mail, User, Clock, Inbox, CheckCircle } from 'lucide-react';
 import { getMessages, deleteMessage } from '../../../utils/function.js';
+import Loading from '../Loading.jsx';
 
 const AdminMessages = () => {
   const queryClient = useQueryClient();
@@ -29,7 +30,7 @@ const AdminMessages = () => {
     }
   };
 
-  if (isLoading) return <div className="p-10 text-center font-bold">Loading Inbox...</div>;
+  if (isLoading) return <Loading/>
   if (isError) return <div className="p-10 text-center text-red-500">Error loading messages.</div>;
 
   return (

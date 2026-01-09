@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { getHomeData, sendHomedata } from "../../../utils/function";
 import toast from "react-hot-toast";
+import Loading from "../Loading";
 
 const HomeAdmin = () => {
   const queryClient = useQueryClient();
@@ -79,9 +80,7 @@ const HomeAdmin = () => {
   };
 
   if (isLoading) return (
-    <div className="h-screen flex items-center justify-center bg-gray-50">
-      <Loader2 className="animate-spin text-blue-600" size={40} />
-    </div>
+    <Loading/>
   );
 
   return (
