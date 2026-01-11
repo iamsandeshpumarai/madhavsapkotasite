@@ -44,7 +44,7 @@ const Herosection = ({ data }) => {
           </div>
 
           <div className="flex gap-4">
-            <button onClik={()=>navigate("/contact")} className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-red-600 transition-all active:scale-95">
+            <button onClick={()=>navigate("/contact")} className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-red-600 transition-all active:scale-95">
               Contact Office
             </button>
           </div>
