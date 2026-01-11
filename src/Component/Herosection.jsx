@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Users, Award } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 const Herosection = ({ data }) => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-[90vh] flex items-center bg-slate-50 pt-20">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
@@ -41,7 +44,7 @@ const Herosection = ({ data }) => {
           </div>
 
           <div className="flex gap-4">
-            <button className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-red-600 transition-all active:scale-95">
+            <button onClik={()=>navigate("/contact")} className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-red-600 transition-all active:scale-95">
               Contact Office
             </button>
           </div>
