@@ -1,18 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Users, Award } from 'lucide-react';
-<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom';
 
 const Herosection = ({ data }) => {
   const navigate = useNavigate();
-=======
-import { useNavigate } from "react-router-dom";
 
-const Herosection = ({ data }) => {
-  const navigate = useNavigate();
-
->>>>>>> 5d047516af6dbca8f5016189b653c04471586d98
   return (
     <section className="relative min-h-[90vh] flex items-center bg-slate-50 pt-20">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
@@ -50,13 +43,8 @@ const Herosection = ({ data }) => {
             ))}
           </div>
 
-<<<<<<< HEAD
           <div className="flex gap-4" onClick={()=>{navigate('/contact')}} >
             <button className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-red-600 transition-all active:scale-95">
-=======
-          <div className="flex gap-4">
-            <button onClick={()=>navigate("/contact")} className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-red-600 transition-all active:scale-95">
->>>>>>> 5d047516af6dbca8f5016189b653c04471586d98
               Contact Office
             </button>
           </div>
