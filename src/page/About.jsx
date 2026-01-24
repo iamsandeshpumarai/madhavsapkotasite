@@ -4,6 +4,7 @@ import { Landmark, Shield, User, MapPin, Award, CheckCircle, Calendar, Loader2 }
 import { useQuery } from "@tanstack/react-query";
 import { getAboutData } from "../../utils/function";
 import Loading from "../Component/Loading";
+import About from "../Component/About";
 
 const AboutPage = () => {
   // 1. Fetch data from TanStack Query
@@ -76,7 +77,7 @@ const AboutPage = () => {
             </div>
           </div>
         </div>
-
+<About/>
         {/* POLITICAL POSITIONS SECTION */}
         <section className="mb-32">
           <div className="flex items-center gap-6 mb-16">
@@ -84,7 +85,7 @@ const AboutPage = () => {
             <div className="h-px flex-1 bg-slate-100"></div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {data.politicalPositions.map((pos, i) => (
               <motion.div 
                 key={i}

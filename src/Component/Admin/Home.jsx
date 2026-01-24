@@ -17,6 +17,7 @@ const HomeAdmin = () => {
     queryFn: getHomeData
   });
 
+
   // 2. Initial Empty State
   const [formData, setFormData] = useState({
     name: "",
@@ -24,9 +25,11 @@ const HomeAdmin = () => {
     role: "",
     constituency: "",
     tagline: "",
-    images: [], // Mixture of Strings (URLs) and File Objects
+    images:"", // Mixture of Strings (URLs) and File Objects
     stats: [],
-    professionalExperience: []
+    professionalExperience: [],
+    imagePreview:"",
+    photoUrl:""
   });
 
   // 3. Sync Server Data to Form State
@@ -40,11 +43,14 @@ const HomeAdmin = () => {
         tagline: serverData.tagline || "",
         images: serverData.images || [], // Existing URLs
         stats: serverData.stats || [],
-        professionalExperience: serverData.professionalExperience || []
+        professionalExperience: serverData.professionalExperience || [],
+        imagePreview:serverData.images[0] || "",
+        photoUrl:serverData.images[0] || "",
       });
     }
   }, [serverData]);
-
+  
+  console.log(formData,"is the form data")
   const mutation = useMutation({
     mutationFn: sendHomedata,
     onSuccess: () => {
@@ -62,7 +68,7 @@ const HomeAdmin = () => {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     // Keep existing images (URLs) and add new ones (Files)
-    setFormData(prev => ({ ...prev, images: [...prev.images, ...files] }));
+    setFormData(prev => ({ ...prev, images: [...files],imagePreview:URL.createObjectURL(files[0]) }));
   };
 
   const updateArrayItem = (index, field, value, section) => {
@@ -123,18 +129,17 @@ const HomeAdmin = () => {
           </label>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {formData.images.map((img, i) => (
-            <div key={i} className="relative aspect-square rounded-2xl overflow-hidden border">
+          
+            <div  className="relative aspect-square rounded-2xl overflow-hidden border">
               <img 
-                src={img instanceof File ? URL.createObjectURL(img) : img} 
+                src={formData.imagePreview} 
                 className="w-full h-full object-cover" 
                 alt="preview" 
               />
-              <button onClick={() => removeArrayItem(i, 'images')} className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600">
-                <X size={12}/>
-              </button>
+
+              
             </div>
-          ))}
+
         </div>
       </section>
 

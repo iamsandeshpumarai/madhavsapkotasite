@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { QRCodeSVG } from "qrcode.react"; // ✅ named export
+// import { QRCodeSVG } from "qrcode.react"; // ✅ named export
 import { useQuery } from '@tanstack/react-query';
 import { getContactData } from '../../utils/function';
-
+import QrCode from '../qrcode/qrcode.jpeg' 
 
 const Footer = () => {
  const {data} =  useQuery({
@@ -90,12 +90,14 @@ const Footer = () => {
           <div className="flex flex-col items-center lg:items-end">
             <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-8">Connect Digitally</h3>
             <div className="bg-white p-3 rounded-xl shadow-2xl transition-transform hover:rotate-3 duration-300">
-              <QRCodeSVG 
+              {/* <QRCodeSVG 
                 value={websiteUrl}
                 size={120}
                 level={"H"}
                 renderAs={"svg"}
-              />
+              /> */}
+            
+          <img src={QrCode} alt="" className='w-[120px]'  />
             </div>
             <p className="mt-4 text-[10px] text-slate-500 font-bold uppercase text-center lg:text-right">
               Scan to view website

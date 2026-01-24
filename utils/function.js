@@ -10,6 +10,7 @@ export const sendHomedata = async (payloaddata) => {
         data.append("role", payloaddata.role);
         data.append("constituency", payloaddata.constituency);
         data.append("tagline", payloaddata.tagline);
+        data.append("photoUrl", payloaddata.photoUrl);
 
         // 2. Append the actual Image Files from your computer
         payloaddata.images.forEach((file) => {
